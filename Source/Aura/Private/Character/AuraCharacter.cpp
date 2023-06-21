@@ -2,9 +2,7 @@
 
 
 #include "Character/AuraCharacter.h"
-
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Serialization/AsyncPackageLoader.h"
 
 AAuraCharacter::AAuraCharacter()
 {
