@@ -35,6 +35,13 @@ void AAuraEnemy::UnHighlightActor()
 	ToggleHighlight(false);
 }
 
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+}
+
 void AAuraEnemy::ToggleHighlight(bool bIsEnabled)
 {
 	GetMesh()->SetRenderCustomDepth(bIsEnabled);
