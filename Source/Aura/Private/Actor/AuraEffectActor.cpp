@@ -30,7 +30,16 @@ void AAuraEffectActor::BeginPlay()
 void AAuraEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ApplyEffectToTarget(OtherActor, InstantGameplayEffectClass);
+	if (InstantGameplayEffectClass)
+	{
+		ApplyEffectToTarget(OtherActor, InstantGameplayEffectClass);
+	}
+	
+	if (DurationGameplayEffectClass)
+	{
+		ApplyEffectToTarget(OtherActor, DurationGameplayEffectClass);
+	}
+	
 	Destroy();
 }
 
