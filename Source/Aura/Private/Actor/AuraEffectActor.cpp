@@ -4,49 +4,56 @@
 #include "Actor/AuraEffectActor.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
-#include "Components/SphereComponent.h"
+//#include "Components/SphereComponent.h"
 
 AAuraEffectActor::AAuraEffectActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
-	SetRootComponent(Mesh);
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("SceneRoot"));
 
-	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
-	Sphere->SetupAttachment(GetRootComponent());
-	Sphere->SetSphereRadius(250.f);
-	Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
+	// Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	// SetRootComponent(Mesh);
+	//
+	// Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
+	// Sphere->SetupAttachment(GetRootComponent());
+	// Sphere->SetSphereRadius(250.f);
+	// Sphere->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 }
 
 void AAuraEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraEffectActor::OnBeginOverlap);
-	Sphere->OnComponentEndOverlap.AddDynamic(this, &AAuraEffectActor::OnEndOverlap);
+	// Sphere->OnComponentBeginOverlap.AddDynamic(this, &AAuraEffectActor::OnBeginOverlap);
+	// Sphere->OnComponentEndOverlap.AddDynamic(this, &AAuraEffectActor::OnEndOverlap);
 }
 
-void AAuraEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (InstantGameplayEffectClass)
-	{
-		ApplyEffectToTarget(OtherActor, InstantGameplayEffectClass);
-	}
-	
-	if (DurationGameplayEffectClass)
-	{
-		ApplyEffectToTarget(OtherActor, DurationGameplayEffectClass);
-	}
-	
-	Destroy();
-}
-
-void AAuraEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-}
+// void AAuraEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+// 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+// {
+// 	if (InstantGameplayEffectClass)
+// 	{
+// 		ApplyEffectToTarget(OtherActor, InstantGameplayEffectClass);
+// 	}
+// 	
+// 	if (DurationGameplayEffectClass)
+// 	{
+// 		ApplyEffectToTarget(OtherActor, DurationGameplayEffectClass);
+// 	}
+//
+// 	if (InfiniteGameplayEffectClass)
+// 	{
+// 		ApplyEffectToTarget(OtherActor, InfiniteGameplayEffectClass);
+// 	}
+// 	
+// 	Destroy();
+// }
+//
+// void AAuraEffectActor::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+// 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+// {
+// }
 
 void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
