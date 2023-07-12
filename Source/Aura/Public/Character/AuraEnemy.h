@@ -24,6 +24,7 @@ public:
 	//~ End Enemy Interface
 protected:
 	virtual void BeginPlay() override;
+	virtual void InitAbilityActorInfo() override;
 	
 private:
 	void ToggleHighlight(bool bIsEnabled);
