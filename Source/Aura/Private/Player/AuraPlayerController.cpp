@@ -212,6 +212,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponent()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Pawn: %s"), *GetPawn()->GetName()); 
 	if (AuraAbilitySystemComponent == nullptr)
 	{
 		AuraAbilitySystemComponent =
