@@ -26,6 +26,7 @@ struct FUIWidgetRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
+// This could be moved into a smaller class that could be reused. Look into this in the future.
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
