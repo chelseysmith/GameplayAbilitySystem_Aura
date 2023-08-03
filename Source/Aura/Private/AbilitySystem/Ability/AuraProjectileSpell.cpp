@@ -41,14 +41,14 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 
 		FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
-		// EffectContextHandle.SetAbility(this);
-		// EffectContextHandle.AddSourceObject(Projectile);
-		// TArray<TWeakObjectPtr<AActor>> Actors;
-		// Actors.Add(Projectile);
-		// EffectContextHandle.AddActors(Actors);
-		// FHitResult HitResult;
-		// HitResult.Location = TargetLocation;
-		// EffectContextHandle.AddHitResult(HitResult);
+		EffectContextHandle.SetAbility(this);
+		EffectContextHandle.AddSourceObject(Projectile);
+		TArray<TWeakObjectPtr<AActor>> Actors;
+		Actors.Add(Projectile);
+		EffectContextHandle.AddActors(Actors);
+		FHitResult HitResult;
+		HitResult.Location = TargetLocation;
+		EffectContextHandle.AddHitResult(HitResult);
 
 		const FGameplayEffectSpecHandle SpecHandle =
 			SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
