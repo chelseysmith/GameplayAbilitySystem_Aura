@@ -25,7 +25,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
 
 	//TODO: This has been disabled due to the animation montage not being replicated. For now we will just have a homing projectile.
-	//Rotation.Pitch = 0.f;
+	Rotation.Pitch = 0.f;
 
 	FTransform SpawnTransform;
 	SpawnTransform.SetLocation(SocketLocation);
