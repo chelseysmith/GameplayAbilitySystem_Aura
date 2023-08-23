@@ -21,7 +21,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	if (!bIsServer) return;
 
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(),
-		FAuraGameplayTags::Get().Montage_Attack_Weapon);
+		FAuraGameplayTags::Get().CombatSocket_Weapon);
 	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
 
 	//TODO: This has been disabled due to the animation montage not being replicated. For now we will just have a homing projectile.
