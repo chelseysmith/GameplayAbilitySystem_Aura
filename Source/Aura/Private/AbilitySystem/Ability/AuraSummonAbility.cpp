@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Ability/AuraSummonAbility.h"
 
+#include "NavigationSystem.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
@@ -11,34 +12,29 @@ TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 	const FVector Location = GetAvatarActorFromActorInfo()->GetActorLocation();
 
 	const float DeltaSpread = SpawnSpread / NumMinions;
-
-	const FVector RightOfSpread = Forward.RotateAngleAxis(SpawnSpread / 2.f, FVector::UpVector);
 	const FVector LeftOfSpread = Forward.RotateAngleAxis(-SpawnSpread / 2.f, FVector::UpVector);
+	
 	TArray<FVector> SpawnLocations;
 	for (int32 i = 0; i < NumMinions; i++)
 	{
-		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i, FVector::UpVector);
+		const FVector Direction = LeftOfSpread.RotateAngleAxis(DeltaSpread * i + DeltaSpread / 2.f, FVector::UpVector);
 		const FVector ChosenSpawnLocation = Location + Direction * FMath::FRandRange(MinSpawnDistance, MaxSpawnDistance);
-		SpawnLocations.Add(ChosenSpawnLocation);
-		DrawDebugSphere(GetWorld(), ChosenSpawnLocation, 15.f, 10.f, FColor::Cyan, false, 1.f);
-		UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + Direction * MaxSpawnDistance, 4.f, FLinearColor::White, 1.f);
 
-		DrawDebugSphere(GetWorld(), Location + Direction * MinSpawnDistance, 5.f, 10.f, FColor::Purple, false, 1.f);
-		DrawDebugSphere(GetWorld(), Location + Direction * MaxSpawnDistance, 5.f, 10.f, FColor::Purple, false, 1.f);
+		FNavLocation NavLocation;
+		if (UWorld* World = GetWorld())
+		{
+			UNavigationSystemV1* NavigationSystemV1 = UNavigationSystemV1::GetCurrent(World);
+			if (NavigationSystemV1->ProjectPointToNavigation(ChosenSpawnLocation, NavLocation))
+			{
+				SpawnLocations.Add(NavLocation.Location);
+			}
+			//else i--; This could cause a lock if the entire Angle was unable to spawn an enemy. Look into this in the future.
+		}
 	}
 
-	
-	//UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + RightOfSpread * MaxSpawnDistance, 4.f, FLinearColor::Green, 5.f);
-
-	DrawDebugSphere(GetWorld(), Location + RightOfSpread * MinSpawnDistance, 5.f, 10.f, FColor::Green, false, 1.f);
-	DrawDebugSphere(GetWorld(), Location + RightOfSpread * MaxSpawnDistance, 5.f, 10.f, FColor::Green, false, 1.f);
-	
-	
-	//UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + LeftOfSpread * MaxSpawnDistance, 4.f, FLinearColor::Red, 5.f);
-
-	DrawDebugSphere(GetWorld(), Location + LeftOfSpread * MinSpawnDistance, 5.f, 10.f, FColor::Red, false, 1.f);
-	DrawDebugSphere(GetWorld(), Location + LeftOfSpread * MaxSpawnDistance, 5.f, 10.f, FColor::Red, false, 1.f);
-	
+	const FVector RightOfSpread = Forward.RotateAngleAxis(SpawnSpread / 2.f, FVector::UpVector);
+	UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + RightOfSpread * MaxSpawnDistance, 4.f, FLinearColor::Green, 5.f);
+	UKismetSystemLibrary::DrawDebugArrow(GetAvatarActorFromActorInfo(), Location, Location + LeftOfSpread * MaxSpawnDistance, 4.f, FLinearColor::Red, 5.f);
 	
 	return SpawnLocations;	
 }
