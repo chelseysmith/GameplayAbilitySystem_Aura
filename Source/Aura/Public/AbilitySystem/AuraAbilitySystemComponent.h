@@ -37,6 +37,8 @@ public:
 
 protected:
 
+	virtual void OnRep_ActivateAbilities() override;
+
 	UFUNCTION(Client, Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle);
 	
