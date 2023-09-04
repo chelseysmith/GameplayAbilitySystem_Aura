@@ -17,7 +17,7 @@ FAuraLevelUpInfo ULevelUpInfo::FindLevelUpInfoForExperience(int32 Experience)
 	return LevelUpInformation[Index];
 }
 
-int32 ULevelUpInfo::FindLevelForXP(int32 XP)
+int32 ULevelUpInfo::FindLevelForXP(int32 XP) const
 {
 	int32 Level = 1;
 	bool bSearching = true;

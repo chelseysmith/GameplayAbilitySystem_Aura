@@ -8,6 +8,7 @@
 #include "AuraPlayerState.generated.h"
 
 
+class ULevelUpInfo;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
@@ -28,6 +29,9 @@ public:
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	FORCEINLINE UAttributeSet* GetAttributeSet() const {return AttributeSet;}
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 
 	FOnPlayerStatChanged OnLevelChangedDelegate;
 	FOnPlayerStatChanged OnXPChangedDelegate;
