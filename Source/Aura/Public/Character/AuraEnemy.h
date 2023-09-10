@@ -74,6 +74,6 @@ protected:
 	TObjectPtr<AAuraAIController> AuraAIController;
 	
 private:
-	void ToggleHighlight(bool bIsEnabled);
+	void ToggleHighlight(bool bIsEnabled) const;
 	
 };

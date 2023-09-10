@@ -99,15 +99,6 @@ void AAuraEnemy::BeginPlay()
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
-	if (bHitReacting)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("HitReacting: true"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("HitReacting: false"));
-	}
-	
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
 
 	if (AuraAIController && AuraAIController->GetBlackboardComponent())
@@ -168,7 +159,7 @@ void AAuraEnemy::InitializeDefaultAttributes() const
 	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, AbilitySystemComponent);
 }
 
-void AAuraEnemy::ToggleHighlight(bool bIsEnabled)
+void AAuraEnemy::ToggleHighlight(bool bIsEnabled) const
 {
 	GetMesh()->SetRenderCustomDepth(bIsEnabled);
 	if (Weapon)
