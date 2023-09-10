@@ -9,6 +9,7 @@
 #include "GameFramework/Character.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 #include "Interaction/PlayerInterface.h"
 #include "Player/AuraPlayerController.h"
@@ -168,6 +169,18 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, const f
 	}
 }
 
+void UAuraAttributeSet::ShowXPText(const FEffectProperties& Props, int32 XP) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->GetController()))
+		{
+			PC->ShowXPAmount(XP, Props.TargetCharacter);
+			return;
+		}
+	}
+}
+
 void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
 	if (Props.TargetCharacter->Implements<UCombatInterface>())
@@ -181,6 +194,8 @@ void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 		FGameplayEventData Payload;
 		Payload.EventTag = GameplayTags.Attributes_Meta_IncomingXP;
 		Payload.EventMagnitude = XPReward;
+		
+		ShowXPText(Props, XPReward);
 		
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingXP, Payload);
 	}

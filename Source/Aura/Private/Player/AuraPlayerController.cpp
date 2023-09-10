@@ -15,6 +15,7 @@
 #include "Interaction/EnemyInterface.h"
 #include "GameFramework/Character.h"
 #include "UI/Widget/DamageTextComponent.h"
+#include "UI/Widget/XPTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -40,6 +41,18 @@ void AAuraPlayerController::ShowDamageAmount_Implementation(float DamageAmount, 
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		DamageText->SetDamageText(DamageAmount, bBlockedHit, bCriticalHit);
+	}
+}
+
+void AAuraPlayerController::ShowXPAmount_Implementation(int32 XP, ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && XPTextComponentClass && IsLocalController())
+	{
+		UXPTextComponent* XPText = NewObject<UXPTextComponent>(TargetCharacter, XPTextComponentClass);
+		XPText->RegisterComponent();
+		XPText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		XPText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		XPText->SetXPText(XP);
 	}
 }
 

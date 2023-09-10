@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UXPTextComponent;
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -31,6 +32,9 @@ public:
 
 	UFUNCTION(Client, Reliable)
 	void ShowDamageAmount(float DamageAmount, ACharacter* TargetCharacter, bool bBlockedHit, bool bCriticalHit);
+
+	UFUNCTION(Client, Reliable)
+	void ShowXPAmount(int32 XP, ACharacter* TargetCharacter);
 
 protected:
 	virtual void BeginPlay() override;
@@ -86,5 +90,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UXPTextComponent> XPTextComponentClass;
 	
 };
