@@ -59,7 +59,6 @@ void AAuraPlayerState::SetSpellPoints(int32 InSpellPoints)
 
 void AAuraPlayerState::AddToLevel(int32 InLevel)
 {
-	InLevel = FMath::Clamp(InLevel, 1, 1);
 	Level += InLevel;
 
 	OnLevelChangedDelegate.Broadcast(Level);
@@ -67,7 +66,6 @@ void AAuraPlayerState::AddToLevel(int32 InLevel)
 
 void AAuraPlayerState::AddToXP(int32 InXP)
 {
-	InXP = FMath::Max(InXP, 0);
 	XP += InXP;
 	OnXPChangedDelegate.Broadcast(XP);
 }
