@@ -172,7 +172,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 	for (const FAuraAbilityInfo& Info : AbilityInfo->AbilityInformation)
 	{
 		if (!Info.AbilityTag.IsValid()) continue;
-		if (Level < Info.LevelRequirement)  continue;
+		if (Level < Info.LevelRequirement) continue;
 		
 		if (GetSpecFromAbilityTag(Info.AbilityTag) == nullptr)
 		{
@@ -180,6 +180,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);//Force replication NOW!
+			ClientUpdateAbilityStatus(Info.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible);
 		}
 	}
 }
@@ -210,4 +211,9 @@ void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySys
 		//TODO: Broadcast the tag to the Widget Controller
 		
 	}
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
