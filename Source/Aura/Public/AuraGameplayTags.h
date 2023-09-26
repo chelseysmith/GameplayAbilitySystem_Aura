@@ -57,6 +57,8 @@ public:
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Physical;
 
+	FGameplayTag Abilities_None;
+	
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 
