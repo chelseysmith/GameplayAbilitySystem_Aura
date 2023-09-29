@@ -15,7 +15,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 		{
 			SelectedAbility.Status = StatusTag;
-			TriggerButtonChange(StatusTag, CurrentSpellPoints);
+			TriggerButtonChange(AbilityTag, StatusTag, CurrentSpellPoints);
 		}
 		
 		if (AbilityInfo)
@@ -31,7 +31,7 @@ void USpellMenuWidgetController::BindCallbacksToDependencies()
 		PlayerSpellPointsChangedDelegate.Broadcast(SpellPoints);
 		CurrentSpellPoints = SpellPoints;
 		
-		TriggerButtonChange(SelectedAbility.Status, CurrentSpellPoints);
+		TriggerButtonChange(SelectedAbility.Ability, SelectedAbility.Status, CurrentSpellPoints);
 	});
 }
 
@@ -65,7 +65,7 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	SelectedAbility.Ability = AbilityTag;
 	SelectedAbility.Status = AbilityStatus;
 	
-	TriggerButtonChange(AbilityStatus, SpellPoints);
+	TriggerButtonChange(AbilityTag, AbilityStatus, SpellPoints);
 }
 
 void USpellMenuWidgetController::SpendPointButtonPressed()
@@ -76,12 +76,17 @@ void USpellMenuWidgetController::SpendPointButtonPressed()
 	}
 }
 
-void USpellMenuWidgetController::TriggerButtonChange(const FGameplayTag& AbilityStatus, int32 SpellPoints) const
+void USpellMenuWidgetController::TriggerButtonChange(const FGameplayTag& AbilityTag, const FGameplayTag& AbilityStatus, int32 SpellPoints)
 {
 	bool bEnableSpendPoints = false;
 	bool bEnableEquip = false;
 	ShouldEnableButtons(AbilityStatus, SpellPoints, bEnableSpendPoints, bEnableEquip);
-	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip);
+
+	FString Description;
+	FString NextLevelDescription;
+	GetAuraASC()->GetDescriptionsByAbilityTag(AbilityTag, Description, NextLevelDescription);
+	
+	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints, bEnableEquip, Description, NextLevelDescription);
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton)

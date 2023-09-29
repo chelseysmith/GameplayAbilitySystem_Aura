@@ -9,8 +9,11 @@
 #include "SpellMenuWidgetController.generated.h"
 
 struct FAuraGameplayTags;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectedSignature, bool, bSpendPointsButtonEnabled, bool,
-                                             bEquipButtonEnabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignature,
+	bool, bSpendPointsButtonEnabled,
+	bool, bEquipButtonEnabled,
+	FString, DescriptionString,
+	FString, NextLevelDescriptionString);
 
 struct FSelectedAbility
 {
@@ -44,7 +47,7 @@ public:
 	void SpendPointButtonPressed();
 private:
 
-	void TriggerButtonChange(const FGameplayTag& AbilityStatus, int32 SpellPoints) const;
+	void TriggerButtonChange(const FGameplayTag& AbilityTag, const FGameplayTag& AbilityStatus, int32 SpellPoints);
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, int32 SpellPoints, bool& bShouldEnableSpendPointsButton, bool& bShouldEnableEquipButton);
 	
 
