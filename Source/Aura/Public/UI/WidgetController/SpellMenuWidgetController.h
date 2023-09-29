@@ -45,6 +45,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SpendPointButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
+	void GlobeDeselect();
+	
 private:
 
 	void TriggerButtonChange(const FGameplayTag& AbilityTag, const FGameplayTag& AbilityStatus, int32 SpellPoints);
